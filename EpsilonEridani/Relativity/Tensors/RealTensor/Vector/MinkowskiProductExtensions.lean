@@ -37,10 +37,10 @@ declaration order, the file contains:
 * in at least two spatial dimensions, the existence of two vectors on the mass shell with
   prescribed energies above the mass and a prescribed angle between their spatial parts
   (`exists_massShell_pair_angle_eq`);
-* the symmetry of the Minkowski product as a bilinear form
-  (`isSymm_toBilinForm_minkowskiProduct`), the witness that supplies the `IsRefl` hypothesis of
-  the reflexive-form results about light-cone bases in
-  `EpsilonEridani.Mathematics.LinearAlgebra.BilinearForm.LightConeBasis`.
+* the symmetry (`isSymm_toBilinForm_minkowskiProduct`) and nondegeneracy
+  (`nondegenerate_toBilinForm_minkowskiProduct`) of the Minkowski product as a bilinear form, the
+  witnesses that supply the `IsRefl` and `Nondegenerate` hypotheses of the results about light-cone
+  bases in `EpsilonEridani.Mathematics.LinearAlgebra.BilinearForm.LightConeBasis`.
 -/
 
 public section
@@ -155,5 +155,13 @@ of `LightConeBasis.bilinForm_eq_plus_mul_minus_add` and
 theorem isSymm_toBilinForm_minkowskiProduct {d : ℕ} :
     (minkowskiProduct (d := d)).toBilinForm.IsSymm :=
   ⟨minkowskiProduct_symm⟩
+
+/-- The Minkowski product is a nondegenerate bilinear form: a vector orthogonal to every vector
+is zero. -/
+theorem nondegenerate_toBilinForm_minkowskiProduct {d : ℕ} :
+    (minkowskiProduct (d := d)).toBilinForm.Nondegenerate :=
+  (LinearMap.IsRefl.nondegenerate_iff_separatingLeft
+    isSymm_toBilinForm_minkowskiProduct.isRefl).2 fun p hp =>
+      (minkowskiProduct_eq_zero_forall_iff p).1 hp
 
 end EpsilonEridani
