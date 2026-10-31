@@ -35,8 +35,8 @@ and proves, with no mass or high-energy approximation,
   on the inelasticity `y` (`xi_congr`, `beta_congr`, `tMom_congr`, `MX2_congr`).
 
 The event is also exclusive kinematics with `X` as the produced system (`toExclKinematics`), and
-`t` is the exclusive momentum-transfer invariant `ExclKinematics.tMom` of that event
-(`tMom_toExclKinematics`).
+`t` and `Q²` are the exclusive invariants `ExclKinematics.tMom` and `ExclKinematics.Q2` of that
+event (`tMom_toExclKinematics`, `Q2_toExclKinematics`).
 
 As elsewhere in the DIS kinematics layer, Lorentz products are taken with respect to an abstract
 bilinear form `g`, assumed symmetric where needed, and real division follows Lean's convention
@@ -193,6 +193,11 @@ lemma tMom_toExclKinematics (g : Bilin V) (K : DisKinematics V) (phiL phiH : ℝ
     (toExclKinematics K phiL phiH).tMom g = tMom g K := by
   simp only [ExclKinematics.tMom, delta_toExclKinematics, map_neg, LinearMap.neg_apply, neg_neg,
     tMom]
+
+/-- The exclusive hard scale of the bridged event is the inclusive `Q² = -q²`. -/
+@[simp]
+lemma Q2_toExclKinematics (g : Bilin V) (K : DisKinematics V) (phiL phiH : ℝ) :
+    (toExclKinematics K phiL phiH).Q2 g = K.Q2 g := (rfl)
 
 /-- Expansion of the diffractive mass: `M_X² = 2 Δ·q - Q² + t`. -/
 lemma MX2_eq_two_mul_apply_deltaTarget_q_sub_Q2_add_tMom (g : Bilin V) (hg : g.IsSymm)
