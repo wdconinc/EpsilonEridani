@@ -63,8 +63,8 @@ every statement here applies to it as well.
   `Species.dotProduct_flavorBlindMatrix_mulVec_of_mem_nonSingletSector`: non-singlet vectors
   and combinations are eigenvectors with eigenvalue `qq`.
 * `Species.flavorBlindMatrix_mulVec_mem_singletSector`: the singlet sector is invariant.
-* `Species.sub_mem_nonSingletSector`: the explicit decomposition of a vector into its
-  singlet-sector part and a non-singlet remainder.
+* `Species.sub_smul_singletVector_add_smul_single_gluon_mem_nonSingletSector`: the explicit
+  decomposition of a vector into its singlet-sector part and a non-singlet remainder.
 * `Species.isCompl_singletSector_nonSingletSector`: the two sectors are complementary.
 * `Species.finrank_singletSector`, `Species.finrank_nonSingletSector`: their dimensions `2`
   and `2 n_f - 1`.
@@ -243,8 +243,8 @@ part — the vector `(Σ v / (2 n_f)) • singletVector + v gluon • Pi.single 
 singlet and gluon component agree with those of the vector — leaves the non-singlet sector.
 Together with `mem_singletSector` this is the explicit singlet/non-singlet decomposition of a
 vector. -/
-theorem sub_mem_nonSingletSector [Fintype Flavor] (h : IsUnit (2 * Fintype.card Flavor : R))
-    (v : Species Flavor → R) :
+theorem sub_smul_singletVector_add_smul_single_gluon_mem_nonSingletSector [Fintype Flavor]
+    (h : IsUnit (2 * Fintype.card Flavor : R)) (v : Species Flavor → R) :
     v - ((↑h.unit⁻¹ * singlet v) • singletVector + v gluon • Pi.single gluon 1) ∈
       nonSingletSector := by
   refine mem_nonSingletSector.2 ⟨?_, ?_⟩
@@ -272,7 +272,7 @@ theorem isCompl_singletSector_nonSingletSector [Fintype Flavor]
     rw [← add_sub_cancel
       ((↑h.unit⁻¹ * singlet v) • singletVector + v gluon • Pi.single gluon 1) v]
     exact Submodule.add_mem_sup (mem_singletSector.2 ⟨_, _, rfl⟩)
-      (sub_mem_nonSingletSector h v)
+      (sub_smul_singletVector_add_smul_single_gluon_mem_nonSingletSector h v)
 
 /-- Over a nontrivial ring, the singlet sector is two-dimensional as soon as there is a quark
 flavour. -/
