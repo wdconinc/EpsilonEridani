@@ -13,26 +13,27 @@ public import EpsilonEridani.QFT.Scattering.DIS.CrossSection
 # Isospin, the neutron, and the proton-neutron difference of `F₂`
 
 In the quark-parton model the neutral-current structure function of a target is
-`F₂ = x Σ_f e_f² (q_f + q̄_f)` (`DIS.f2LO`), where `q_f + q̄_f` is the target's quark plus
+`F₂ = x Σ_f e_f² (q_f + qbar_f)` (`DIS.f2LO`), where `q_f + qbar_f` is the target's quark plus
 antiquark density of flavour `f`. Exact isospin symmetry relates the neutron to the proton: the
 neutron's densities are the proton's with up and down exchanged, `q^n_f = q^p_{τ f}` with
 `τ = Equiv.swap u d` the isospin involution, which fixes every other flavour. The neutron density
 is therefore the pullback `PDF.comap τ q^p`; that the two nucleons are related this way is the
 assumption of exact isospin symmetry, and its violation is not modelled here. Since `F₂` sees only
-the combination `q_f + q̄_f`, relabelling the flavours of that combination is all the neutron needs.
+the combination `q_f + qbar_f`, relabelling the flavours of that combination is all the neutron
+needs.
 
 Relabelling the flavours of a density is the same as relabelling the charges the other way
 (`f2LO_comap`), so the neutron is the proton with the up and down charges exchanged. Every flavour
 other than up and down then drops out of the difference:
 
-  `F₂^p - F₂^n = x (e_u² - e_d²) ((u + ū) - (d + d̄))`  (`f2LO_sub_f2LO_comap_swap`),
+  `F₂^p - F₂^n = x (e_u² - e_d²) ((u + ubar) - (d + dbar))`  (`f2LO_sub_f2LO_comap_swap`),
 
 which for the light flavours, `e_u = 2/3` and `e_d = e_s = -1/3`, is the identity
-`F₂^p - F₂^n = (x / 3) (u + ū - d - d̄)` (`f2LO_charge_sub_f2LO_charge_comap_swap`) whose `dx / x`
-integral is the Gottfried sum.
+`F₂^p - F₂^n = (x / 3) (u + ubar - d - dbar)` (`f2LO_charge_sub_f2LO_charge_comap_swap`) whose
+`dx / x` integral is the Gottfried sum.
 
 The ratio `F₂^p / F₂^n` at large `x` is not fixed by isospin. It is fixed by the limits of the
-density ratios: if every `q_f + q̄_f` is asymptotically `ρ_f` times a common reference function,
+density ratios: if every `q_f + qbar_f` is asymptotically `ρ_f` times a common reference function,
 the ratio tends to `Σ e_f² ρ_f / Σ e_{τ f}² ρ_f` (`tendsto_f2LO_div_f2LO_comap_swap`). For the light
 flavours with `d/u → r` and `s/u → t` that is `(4 + r + t) / (1 + 4 r + t)`
 (`tendsto_f2LO_charge_div_f2LO_charge_comap_swap`), and the familiar value `4` as `x → 1` is the
@@ -144,7 +145,7 @@ open EpsilonEridani.Particles.Meson.LightFlavor
 
 /-- **The light-flavour proton-neutron difference of `F₂`.** With the light-quark charges,
 `F₂^p - F₂^n = (x / 3) (q_u - q_d)`: for `q_f` the quark plus antiquark density this is
-`(x / 3) (u + ū - d - d̄)`, the integrand of the Gottfried sum after division by `x`. -/
+`(x / 3) (u + ubar - d - dbar)`, the integrand of the Gottfried sum after division by `x`. -/
 theorem f2LO_charge_sub_f2LO_charge_comap_swap (q : Pdf LightFlavor) (x Q2 : ℝ) :
     f2LO charge q x Q2 - f2LO charge (comap (Equiv.swap u d) q) x Q2
       = x / 3 * (q u x Q2 - q d x Q2) := by
