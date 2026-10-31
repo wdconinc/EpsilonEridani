@@ -85,15 +85,7 @@ theorem dipoleS_comm (U : WilsonConfiguration Nc) (x y : EuclideanSpace ℝ (Fin
 /-- **Unitarity bound** on the dipole operator of a single configuration: `|S U x y| ≤ 1`. -/
 theorem abs_dipoleS_le_one (U : WilsonConfiguration Nc) (x y : EuclideanSpace ℝ (Fin 2)) :
     |dipoleS U x y| ≤ 1 := by
-  have hmem : (U x : Matrix (Fin Nc) (Fin Nc) ℂ) * star (U y).1 ∈ unitaryGroup (Fin Nc) ℂ :=
-    mul_mem (U x).2 (Unitary.star_mem (U y).2)
-  have htr := (Complex.abs_re_le_norm _).trans (Matrix.norm_trace_le_card_of_mem_unitaryGroup hmem)
-  rw [Fintype.card_fin] at htr
-  simp only [dipoleS_def, abs_mul, abs_inv, Nat.abs_cast]
-  rcases Nat.eq_zero_or_pos Nc with h | h
-  · simp [h]
-  · rw [inv_mul_le_iff₀ (by exact_mod_cast h), mul_one]
-    exact htr
+  simpa [dipoleS_def] using abs_inv_card_mul_re_trace_le_one (U x * star (U y)).2
 
 /-- The scattering amplitude `1 - S U x y` of a dipole in a single configuration lies in
 `[0, 2]`. The sharper bound `[0, 1]` holds only after averaging over a target ensemble whose
