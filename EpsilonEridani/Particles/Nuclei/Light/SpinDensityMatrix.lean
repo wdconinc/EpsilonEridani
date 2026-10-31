@@ -151,7 +151,7 @@ def spinOne : Fin 3 → Matrix (Fin 3) (Fin 3) ℂ :=
     !![0, -I, 0; I, 0, 0; 0, 0, 0]]
 
 /-- The product of two spin-one matrices: `(Sᵢ Sⱼ)ₐᵦ = δᵢⱼ δₐᵦ - δᵢᵦ δⱼₐ`, the contraction
-identity `εᵢₐ꜀ εⱼᵦ꜀ = δᵢⱼ δₐᵦ - δᵢᵦ δₐⱼ`. -/
+identity `εᵢₐₖ εⱼᵦₖ = δᵢⱼ δₐᵦ - δᵢᵦ δₐⱼ`. -/
 lemma spinOne_mul_spinOne_apply (i j a b : Fin 3) :
     (spinOne i * spinOne j) a b =
       (if i = j ∧ a = b then 1 else 0) - (if i = b ∧ j = a then 1 else 0) := by
