@@ -111,6 +111,12 @@ theorem singletVector_antiquark (i : Flavor) : (singletVector (antiquark i) : R)
 @[simp]
 theorem singletVector_gluon : (singletVector (gluon : Species Flavor) : R) = 0 := (rfl)
 
+/-- `singletVector` gives a species and its charge conjugate the same weight. -/
+@[simp]
+theorem singletVector_conj (s : Species Flavor) :
+    (singletVector s.conj : R) = singletVector s := by
+  cases s <;> simp
+
 /-- The singlet sector: the span of `singletVector` and the gluon basis vector. -/
 def singletSector [DecidableEq Flavor] : Submodule R (Species Flavor → R) :=
   Submodule.span R {singletVector, Pi.single gluon 1}
@@ -137,6 +143,16 @@ theorem mem_singletSector_iff_exists_forall [DecidableEq Flavor] {v : Species Fl
     refine ⟨a, v gluon, funext fun s => ?_⟩
     cases s <;> simp [ha]
 
+/-- Charge conjugation preserves the singlet sector. -/
+theorem comp_conj_mem_singletSector [DecidableEq Flavor] {v : Species Flavor → R} :
+    v ∘ conj ∈ singletSector ↔ v ∈ singletSector := by
+  simp only [mem_singletSector_iff_exists_forall, Function.comp_apply, conj_quark, conj_antiquark]
+  constructor
+  · rintro ⟨a, h⟩
+    exact ⟨a, fun i => ⟨(h i).2, (h i).1⟩⟩
+  · rintro ⟨a, h⟩
+    exact ⟨a, fun i => ⟨(h i).2, (h i).1⟩⟩
+
 /-- `singletVector` lies in the singlet sector. -/
 theorem singletVector_mem_singletSector [DecidableEq Flavor] :
     (singletVector : Species Flavor → R) ∈ singletSector :=
@@ -162,6 +178,11 @@ def singlet : (Species Flavor → R) →ₗ[R] R where
 
 theorem singlet_apply (v : Species Flavor → R) :
     singlet v = ∑ i, (v (quark i) + v (antiquark i)) := (rfl)
+
+/-- The quark singlet is invariant under charge conjugation of the vector. -/
+theorem singlet_comp_conj (v : Species Flavor → R) : singlet (v ∘ conj) = singlet v := by
+  simp only [singlet_apply, Function.comp_apply, conj_quark, conj_antiquark]
+  exact Finset.sum_congr rfl fun i _ => add_comm _ _
 
 /-- The quark singlet is the pairing with `singletVector`. -/
 @[simp]
@@ -216,6 +237,11 @@ theorem nonSingletSector_def :
 theorem mem_nonSingletSector {v : Species Flavor → R} :
     v ∈ nonSingletSector ↔ singlet v = 0 ∧ v gluon = 0 := by
   simp [nonSingletSector_def, funext_iff, Fin.forall_fin_two]
+
+/-- Charge conjugation preserves the non-singlet sector. -/
+theorem comp_conj_mem_nonSingletSector {v : Species Flavor → R} :
+    v ∘ conj ∈ nonSingletSector ↔ v ∈ nonSingletSector := by
+  simp only [mem_nonSingletSector, Function.comp_apply, conj_gluon, singlet_comp_conj]
 
 end Semiring
 
@@ -385,6 +411,13 @@ theorem flavorBlindMatrix_gluon_antiquark (i : Flavor) :
 @[simp]
 theorem flavorBlindMatrix_gluon_gluon :
     flavorBlindMatrix qq qg gq gg (gluon : Species Flavor) gluon = gg := (rfl)
+
+/-- A flavour-blind kernel is blind to charge conjugation in both indices: conjugating the row
+and the column species leaves every entry unchanged. -/
+@[simp]
+theorem flavorBlindMatrix_conj_conj (s t : Species Flavor) :
+    flavorBlindMatrix qq qg gq gg s.conj t.conj = flavorBlindMatrix qq qg gq gg s t := by
+  cases s <;> cases t <;> simp
 
 /-- Transposing the flavour structure exchanges the quark-from-gluon and gluon-from-quark
 channels. -/
