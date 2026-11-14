@@ -10,13 +10,12 @@ public import Physlib.Relativity.Tensors.RealTensor.Vector.Basic
 /-!
 # Extensions of the basic API of Lorentz vectors
 
-Component lemmas for `Physlib`'s constructors `Lorentz.Vector.ofTemporalComponent` and
-`Lorentz.Vector.ofSpatialComponent`: the time component and spatial part of a purely temporal
-vector `t e₀` and of a purely spatial vector, and the spatial part of a difference
-(`spatialPart_sub`). They describe the equal-time projection
-`v - ofTemporalComponent v.timeComponent` of a vector `v`, which has vanishing time component and
-the spatial part of `v`, and which equals `ofSpatialComponent v.spatialPart`
-(`sub_ofTemporalComponent_timeComponent_eq_ofSpatialComponent_spatialPart`).
+Component lemmas for `Physlib`'s constructor `Lorentz.Vector.ofTemporalComponent`: the time
+component and spatial part of a purely temporal vector `t e₀`, and the spatial part of a
+difference (`spatialPart_sub`). They describe the equal-time projection
+`v - ofTemporalComponent v.timeComponent` of a vector `v`, which has vanishing time component
+(`timeComponent_sub_ofTemporalComponent_timeComponent`) and the spatial part of `v`
+(`spatialPart_sub_ofTemporalComponent`).
 -/
 
 public section
@@ -36,19 +35,6 @@ lemma spatialPart_ofTemporalComponent {d : ℕ} (t : ℝ) :
     (ofTemporalComponent t : Vector d).spatialPart = 0 := by
   ext i
   simp [ofTemporalComponent, basis_apply]
-
-/-- The purely spatial vector `ofSpatialComponent x` has vanishing time component. -/
-@[simp]
-lemma timeComponent_ofSpatialComponent {d : ℕ} (x : EuclideanSpace ℝ (Fin d)) :
-    (ofSpatialComponent x : Vector d).timeComponent = 0 := by
-  simp [ofSpatialComponent, apply_sum, basis_apply]
-
-/-- The purely spatial vector `ofSpatialComponent x` has spatial part `x`. -/
-@[simp]
-lemma spatialPart_ofSpatialComponent {d : ℕ} (x : EuclideanSpace ℝ (Fin d)) :
-    (ofSpatialComponent x : Vector d).spatialPart = x := by
-  ext i
-  simp [ofSpatialComponent, apply_sum, basis_apply]
 
 /-- The spatial part of a difference is the difference of the spatial parts.
 
@@ -72,16 +58,6 @@ lemma timeComponent_sub_ofTemporalComponent_timeComponent {d : ℕ} (v : Vector 
 lemma spatialPart_sub_ofTemporalComponent {d : ℕ} (v : Vector d) (t : ℝ) :
     (v - ofTemporalComponent t).spatialPart = v.spatialPart := by
   simp [spatialPart_sub]
-
-/-- The equal-time projection `v - v⁰ e₀` is the purely spatial vector with the spatial part
-of `v`. -/
-lemma sub_ofTemporalComponent_timeComponent_eq_ofSpatialComponent_spatialPart {d : ℕ}
-    (v : Vector d) :
-    v - ofTemporalComponent v.timeComponent = ofSpatialComponent v.spatialPart := by
-  rw [← sub_eq_zero]
-  refine eq_zero_of_timeComponent_of_spatialPart ?_ ?_
-  · simp
-  · simp [spatialPart_sub]
 
 end Vector
 end Lorentz
