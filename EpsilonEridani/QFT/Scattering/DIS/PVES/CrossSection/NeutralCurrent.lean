@@ -77,8 +77,9 @@ through `Interference.helicitySign`: `true` is right-handed (`λ = 1`) and `fals
 `Electroweak.FermionNeutralCurrentCouplings.ofQuantumNumbers`. The interference structure
 functions `F_i^{γZ}` are those of the full interference term of the squared amplitude, so they
 include both orderings of the two currents; at leading order
-`F₂^{γZ} = 2 x Σ_f e_f g_V^f (f + f̄)`. The hadronic structure functions are inputs at a fixed
-kinematic point; their definitions and parton content are not developed here.
+`F₂^{γZ} = 2 x Σ_f e_f g_V^f (f + f_bar)`, with `f_bar` the antiparton density. The hadronic
+structure functions are inputs at a fixed kinematic point; their definitions and parton content
+are not developed here.
 
 ## References
 
