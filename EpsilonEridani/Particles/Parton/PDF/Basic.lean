@@ -150,12 +150,6 @@ lemma assumptions_iff {f : Pdf Flavor} :
       measurable := h.2.measurable
       momentIntegrable := h.2.momentIntegrable }⟩
 
-/-- A density of a regular family is integrable: its `n = 0` Mellin-moment integrand is the
-density itself. -/
-lemma Regularity.integrable {f : Pdf Flavor} (h : Regularity f) (i : Flavor) (Q2 : ℝ) :
-    MeasureTheory.Integrable (fun x : ℝ => f i x Q2) := by
-  simpa only [pow_zero, one_mul] using h.momentIntegrable 0 i Q2
-
 /-- A density of a regular family is integrable on every set, in particular on the physical
 support `[0, 1]`, which is the form in which the regularity of a density feeds the
 integrability statements of the structure-function layer. -/
